@@ -1,0 +1,135 @@
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class HelloWorld{
+
+     public static void main(String []args){
+        //Scanner sca = new Scanner(System.in);
+        double sum, avg=0;
+        int rolls=0;
+        Scanner mSca = new Scanner(System.in);
+        //how many types of dice
+        int tNum=TypeNumber();
+        //the specific types
+        int[] tName=TypeName(tNum);
+        //how many of each type from above
+        int[] numEach=NumEach(tName,tNum);
+        int rollOrAvg=0;
+        System.out.println("Pick roll reason:\n1. roll\n2. average");
+        rollOrAvg=mSca.nextInt();
+        switch(rollOrAvg){
+            case 1:
+                RollEm(tName, numEach);
+                break;
+            case 2:
+                AvgEm(tName, numEach);
+                break;
+        }
+        
+     }
+     
+     
+     public static int TypeNumber(){
+         Scanner sca = new Scanner(System.in);
+         int num=0;
+         while(num<=0){
+            System.out.println("how many TYPES of dice will you roll?");
+            num = sca.nextInt();
+         }
+         return num;
+         
+
+     }
+     
+     public static int[] TypeName(int tNum){
+         int[] tName= new int[tNum];
+         Scanner sca = new Scanner(System.in);
+         for(int i=0; i<tNum; i++){
+             while(tName[i]<2){
+                 System.out.println("dice type "+(i+1)+" (4/6/8/10/12/20/100): ");
+                 tName[i] = sca.nextInt();
+             }
+         }
+         return tName;
+         
+     }
+     
+     public static int[] NumEach(int[] tName, int tNum){
+         int[] numEach= new int[tNum];
+         Scanner sca = new Scanner(System.in);
+         for(int i=0; i<tName.length; i++){
+             numEach[i]=-1;
+             while(numEach[i]<0){
+                 System.out.println("how many D"+tName[i]+" will you roll? ");
+                 numEach[i] = sca.nextInt();
+             }
+         }
+         return numEach;
+         
+     }
+     
+     public static void RollEm(int[] tName, int numEach[]){
+         Random rand = new Random();
+         int high=FindBiggest(numEach);
+         int[][] rollEm =new int[tName.length][high];
+         for(int i =0; i<tName.length; i++ ){
+             System.out.print("\nrolls for D"+tName[i]+": ");
+             for(int j=0; j<numEach[i];j++){
+                 rollEm[i][j]= rand.nextInt(tName[i])+1;
+                 System.out.print(rollEm[i][j]+" ");
+             }
+         }
+            /* for(int i =0; i<tName.length; i++ ){
+             System.out.print("\nrolls for D"+tName[i]+": ");
+             for(int j=0; j<numEach.length;j++){
+                 System.out.print(rollEm[i][j]+" ");
+             }
+         }
+         */
+         return;
+     }
+     
+     public static void AvgEm(int[] tName, int numEach[]){
+         double sum=0;
+         Random rand = new Random();
+         for(int i =0; i<tName.length; i++ ){
+             sum =0;
+             for(int count=0; count<1000; count++){
+                for(int j =0; j<numEach[i]; j++){
+                  sum+= rand.nextInt(tName[i])+1;
+                }
+             }
+             System.out.println("The average for "+numEach[i]+" D"+tName[i]+": "+(sum/1000));
+         }
+     }
+     
+     
+     public static int FindBiggest(int numEach[]){
+         int high=0;
+         for(int i =0; i<numEach.length; i++){
+             if(numEach[i]>high){
+                 high=numEach[i];
+             }
+         }
+         return high;
+     }
+     
+     /***************************************
+      **************************************/
+     public static int sumOf(int[] Arr){
+         int lowest=Arr[0];
+         for (int j=0; j<4; j++){
+             //System.out.print(Arr[j]);
+             if(Arr[j]<lowest)
+                lowest=Arr[j];
+         }
+         //System.out.println();
+         int sum=0;
+         for (int j=0; j<4; j++){
+             sum+=Arr[j];
+         }
+         return(sum-lowest);
+     }
+}
+
